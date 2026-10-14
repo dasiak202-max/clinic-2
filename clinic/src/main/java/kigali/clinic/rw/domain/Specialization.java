@@ -1,0 +1,46 @@
+package kigali.clinic.rw.domain;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+
+@Entity
+public class Specialization {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+
+    @Column(name = "name")
+    private String name;
+
+    // Specialization is the OWNER here, so joinColumns = its own FK,
+    // inverseJoinColumns = the other side's FK (the teacher's version had them swapped)
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+        name = "doctor_specialization",
+        joinColumns = @JoinColumn(name = "specialization_id"),
+        inverseJoinColumns = @JoinColumn(name = "doctor_id")
+    )
+    private List<Doctor> doctors = new ArrayList<>();
+
+    public UUID getId() { return id; }
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public List<Doctor> getDoctors() { return doctors; }
+    public void setDoctors(List<Doctor> doctors) { this.doctors = doctors; }
+}
