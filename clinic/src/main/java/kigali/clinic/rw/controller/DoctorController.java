@@ -39,6 +39,18 @@ public class DoctorController {
         return new ResponseEntity<>(doctorServ.getAllDoctors(), HttpStatus.OK);
     }
 
+        // B1  ->  GET /api/doctors/by-specialization?name=cardiology
+    @GetMapping(value = "/by-specialization")
+    public ResponseEntity<List<Doctor>> getBySpecialization(@RequestParam String name) {
+        return new ResponseEntity<>(doctorServ.getDoctorsBySpecialization(name), HttpStatus.OK);
+    }
+
+        // B2  ->  GET /api/doctors/without-office
+    @GetMapping(value = "/without-office")
+    public ResponseEntity<List<Doctor>> getWithoutOffice() {
+        return new ResponseEntity<>(doctorServ.getDoctorsWithoutOffice(), HttpStatus.OK);
+    }
+
     // READ one  ->  GET /api/doctor/{id}
     @GetMapping(value = "/{id}")
     public ResponseEntity<?> getDoctorById(@PathVariable UUID id) {

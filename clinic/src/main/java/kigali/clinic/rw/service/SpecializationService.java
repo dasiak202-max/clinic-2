@@ -36,6 +36,11 @@ public class SpecializationService {
         return specRepo.findAll();
     }
 
+        // B3
+    public List<Specialization> getUnusedSpecializations() {
+        return specRepo.findUnusedSpecializations();
+    }
+
     // READ one
     public Specialization getSpecializationById(UUID id) {
         return specRepo.findById(id).orElse(null);

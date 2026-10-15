@@ -1,6 +1,7 @@
 package kigali.clinic.rw.controller;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,16 @@ public class PatientController {
     @GetMapping(value = "/by-last-name")
     public ResponseEntity<List<Patient>> getByLastName(@RequestParam String lastName) {
         return new ResponseEntity<>(patientServ.getPatientsByLastName(lastName), HttpStatus.OK);
+    }
+
+        // B4  ->  GET /api/patients/of-doctor/{doctorId}
+    @GetMapping(value = "/of-doctor/{doctorId}")
+    public ResponseEntity<?> getPatientsOfDoctor(@PathVariable UUID doctorId) {
+        Optional<List<Patient>> result = patientServ.getPatientsOfDoctor(doctorId);
+        if (result.isEmpty()) {
+            return new ResponseEntity<>("The doctor with that id does not exist", HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(result.get(), HttpStatus.OK);
     }
 
     // READ one  ->  GET /api/patient/{id}

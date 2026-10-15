@@ -1,12 +1,14 @@
 package kigali.clinic.rw.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kigali.clinic.rw.domain.Patient;
+import kigali.clinic.rw.repository.DoctorRepository;
 import kigali.clinic.rw.repository.PatientRepository;
 
 @Service
@@ -14,6 +16,9 @@ public class PatientService {
 
     @Autowired
     private PatientRepository patientRepo;
+
+        @Autowired
+    private DoctorRepository doctorRepo;
 
     // CREATE
     public String savePatient(Patient patient) {
@@ -24,6 +29,14 @@ public class PatientService {
     // READ all
     public List<Patient> getAllPatients() {
         return patientRepo.findAll();
+    }
+
+        // B4: Optional.empty() means the doctor does not exist
+    public Optional<List<Patient>> getPatientsOfDoctor(UUID doctorId) {
+        if (!doctorRepo.existsById(doctorId)) {
+            return Optional.empty();
+        }
+        return Optional.of(patientRepo.findPatientsOfDoctor(doctorId));
     }
 
     public List<Patient> getPatientsByLastName(String lastName) {

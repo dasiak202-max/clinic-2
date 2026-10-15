@@ -31,6 +31,7 @@ public class Office {
     @OneToOne (mappedBy = "office")
     private Doctor doctor;
 
+    
     public String getName() {
         return name;
     }

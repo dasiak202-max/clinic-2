@@ -43,6 +43,16 @@ public class DoctorService {
         return doctorRepo.findAll();
     }
 
+        // B1
+    public List<Doctor> getDoctorsBySpecialization(String name) {
+        return doctorRepo.findBySpecializationName(name);
+    }
+
+        // B2
+    public List<Doctor> getDoctorsWithoutOffice() {
+        return doctorRepo.findDoctorsWithoutOffice();
+    }
+
     // READ one
     public Doctor getDoctorById(UUID id) {
         return doctorRepo.findById(id).orElse(null);

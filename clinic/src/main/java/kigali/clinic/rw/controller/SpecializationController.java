@@ -39,6 +39,12 @@ public class SpecializationController {
         return new ResponseEntity<>(specServ.getAllSpecializations(), HttpStatus.OK);
     }
 
+        // B3  ->  GET /api/specializations/unused
+    @GetMapping(value = "/unused")
+    public ResponseEntity<List<Specialization>> getUnused() {
+        return new ResponseEntity<>(specServ.getUnusedSpecializations(), HttpStatus.OK);
+    }
+
     // READ one  ->  GET /api/specialization/{id}
     @GetMapping(value = "/{id}")
     public ResponseEntity<?> getSpecializationById(@PathVariable UUID id) {
