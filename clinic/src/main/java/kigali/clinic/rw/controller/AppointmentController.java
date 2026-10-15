@@ -1,5 +1,6 @@
 package kigali.clinic.rw.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -52,6 +53,13 @@ public class AppointmentController {
         return new ResponseEntity<>(appointmentServ.getAllAppointments(), HttpStatus.OK);
     }
 
+    @GetMapping(value = "/between")
+    public ResponseEntity<List<Appointment>> getBetween(@RequestParam String start, @RequestParam String end) {
+        LocalDate startDate = LocalDate.parse(start);
+        LocalDate endDate = LocalDate.parse(end);
+        return new ResponseEntity<>(appointmentServ.getAppointmentsBetween(startDate, endDate), HttpStatus.OK);
+    }
+
     // READ one  ->  GET /api/appointment/{id}
     @GetMapping(value = "/{id}")
     public ResponseEntity<?> getAppointmentById(@PathVariable UUID id) {
@@ -96,6 +104,11 @@ public class AppointmentController {
     @GetMapping("/specialization/{name}")
     public List<Appointment> bySpecialization(@PathVariable String name) {
         return appointmentRepo.findBySpecializationName(name);
+    }
+
+    @GetMapping(value = "/by-status")
+    public ResponseEntity<List<Appointment>> getByStatus(@RequestParam AppointmentStatus status) {
+        return new ResponseEntity<>(appointmentServ.getAppointmentsByStatus(status), HttpStatus.OK);
     }
 
     @GetMapping("/doctor/{doctorId}/page")

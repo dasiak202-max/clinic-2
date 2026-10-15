@@ -1,5 +1,6 @@
 package kigali.clinic.rw.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -39,6 +40,12 @@ public class AppointmentService {
         if (appointment.getStatus() == null) {
             appointment.setStatus(AppointmentStatus.PENDING);   // default status
         }
+                
+        if (appointmentRepo.existsByDoctorIdAndAppointmentDateAndStatusNot(
+                doctorId, appointment.getAppointmentDate(), AppointmentStatus.CANCELLED)) {
+            return "Doctor is already booked on that date";
+        }
+        
         appointment.setPatient(patient);
         appointment.setDoctor(doctor);
         appointmentRepo.save(appointment);
@@ -78,4 +85,13 @@ public class AppointmentService {
         appointmentRepo.deleteById(id);
         return "Appointment deleted successfully";
     }
+
+    public List<Appointment> getAppointmentsByStatus(AppointmentStatus status) {
+        return appointmentRepo.findByStatusOrderByAppointmentDateAsc(status);
+    }
+
+    public List<Appointment> getAppointmentsBetween(LocalDate start, LocalDate end) {
+        return appointmentRepo.findByAppointmentDateBetweenOrderByAppointmentDateAsc(start,end);
+    } 
+
 }
