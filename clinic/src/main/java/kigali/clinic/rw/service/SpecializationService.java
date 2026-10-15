@@ -87,13 +87,13 @@ public class SpecializationService {
         if (doctor == null) {
             return "Doctor not found";
         }
-        boolean alreadyLinked = spec.getDoctors().stream()
-                .anyMatch(d -> d.getId().equals(doctorId));
+        boolean alreadyLinked = doctor.getSpecializations().stream()
+                .anyMatch(s -> s.getId().equals(specId));
         if (alreadyLinked) {
             return "Doctor already has this specialization";
         }
-        spec.getDoctors().add(doctor);   // change the OWNER's list
-        specRepo.save(spec);             // Hibernate inserts a row in doctor_specialization
+        doctor.getSpecializations().add(spec);   // change the OWNER's list
+        doctorRepo.save(doctor);             // Hibernate inserts a row in doctor_specialization
         return "Doctor added to specialization successfully";
     }
 
