@@ -1,113 +1,62 @@
-# Clinic Management System - React Frontend
+# Clinic Frontend (React)
 
-INSY 8322 - Web Technology and Internet | React Module
+This is the React frontend for my Clinic Management System, done for INSY 8322 (Web Technology and Internet).
+The backend is the Spring Boot project in this same repo, which I built in the earlier chapters.
 
-React + Vite frontend for the Spring Boot Clinic Management System.
+So far I have done the Offices page. It shows all offices from the database, lets you search by office name or number, and lets you delete an office. The Update button is there but not working yet, because this exercise only asked for search and delete.
 
-## What is included
+I also added `exercises/clinic.js`, which is the Week 2 plain JavaScript practice (add, update, delete and print patients without push, splice or for loops).
 
-| Part | File | Status |
-|------|------|--------|
-| Offices page (list all offices) | `src/pages/OfficeList.jsx` | Done |
-| Search by office name or number | `src/pages/OfficeList.jsx` | Done |
-| Delete office (Action column) | `src/pages/OfficeList.jsx` | Done |
-| Update button (Action column) | `src/pages/OfficeList.jsx` | Button only - not implemented (per instructions) |
-| API calls with axios | `src/api/officeApi.js` | Done |
-| Week 2 exercise (5 functions + stretch) | `exercises/clinic.js` | Done |
+## What I used
 
-## Project structure
+React with Vite, axios to call the backend, and Node.js/npm. The backend is Spring Boot with PostgreSQL.
+
+## Running it
+
+The backend and the frontend have to run at the same time, so I use two terminals.
+
+Backend (from the `clinic` folder):
 
 ```
-clinic-frontend/
-├── exercises/
-│   └── clinic.js          # Week 2 plain JavaScript exercise
-├── public/
-├── src/
-│   ├── api/
-│   │   └── officeApi.js   # GET all offices, DELETE office
-│   ├── pages/
-│   │   ├── OfficeList.jsx # Offices page: table, search, delete
-│   │   └── OfficeList.css
-│   ├── App.jsx
-│   ├── index.css
-│   └── main.jsx
-├── index.html
-├── package.json
-└── vite.config.js
+.\mvnw spring-boot:run
 ```
 
-## How to run
+It runs on port 8082. You can check it is working by opening http://localhost:8082/api/offices/all
 
-1. Install Node.js (LTS) from https://nodejs.org and check it:
-   ```bash
-   node -v
-   npm -v
-   ```
-2. Install the project libraries (run inside the `clinic-frontend` folder):
-   ```bash
-   npm install
-   ```
-3. Start your Spring Boot backend on port 8080.
-4. Start the frontend:
-   ```bash
-   npm run dev
-   ```
-5. Open http://localhost:5173
+Frontend (from `clinic-frontend/clinic-frontend`):
 
-## Backend requirements
-
-The frontend expects these endpoints:
-
-| Method | URL | Used for |
-|--------|-----|----------|
-| GET | `http://localhost:8080/api/offices` | Load all offices |
-| DELETE | `http://localhost:8080/api/offices/{id}` | Delete one office |
-
-Each office in the JSON should have `id`, `officeNumber` and `name`.
-If your controller uses a different path, change `BASE_URL` in `src/api/officeApi.js`.
-
-### Allow the frontend to call the API (CORS)
-
-Add this annotation on your `OfficeController` (and later on the other controllers):
-
-```java
-@CrossOrigin(origins = "http://localhost:5173")
-@RestController
-@RequestMapping("/api/offices")
-public class OfficeController { ... }
+```
+npm install
+npm run dev
 ```
 
-Without it the browser blocks the request and the page shows
-"Could not load offices".
+`npm install` is only needed the first time. Then open http://localhost:5173
 
-## How the features work
+To run the Week 2 exercise:
 
-- **Search** - filters the offices already loaded, as you type, by office name
-  or office number. Uses `filter` (no loops).
-- **Delete** - asks for confirmation, calls `DELETE /api/offices/{id}`, then
-  removes the row from state with `filter`. If the backend returns an error
-  (for example 404, or the office is still linked to doctors) the message is
-  shown above the table.
-- **Update** - shows a message only; implementation comes in a later exercise.
-
-## Week 2 exercise
-
-```bash
+```
 node exercises/clinic.js
 ```
 
-Prints the patient list after add, update and delete. If Spring Boot is
-running, it also prints `GET /api/patients` (stretch task).
+## How it connects to the backend
 
-## Push to Git
+All the API calls are in `src/api/officeApi.js`:
 
-```bash
-git init
-git add .
-git commit -m "Clinic frontend: offices page with search and delete, week 2 exercise"
-git branch -M main
-git remote add origin https://github.com/<your-username>/clinic-frontend.git
-git push -u origin main
-```
+- `GET /api/offices/all` to load the offices
+- `DELETE /api/offices/delete/{id}` to delete one
 
-`node_modules` is ignored by `.gitignore` - do not push it.
+I had to add `@CrossOrigin(origins = "http://localhost:5173")` to `OfficeController`, otherwise the browser blocks the requests.
+
+The page itself is `src/pages/OfficeList.jsx`. The offices are loaded once with `useEffect` and kept in state. Search just filters that list as you type. When you delete, it asks to confirm, calls the API, and then removes the row from the list with `filter`.
+
+## Problems I ran into
+
+- npm would not run in PowerShell at first. I fixed it with `Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned`.
+- My backend uses port 8082, not 8080, so I had to change the URL in `officeApi.js`.
+- I got a CORS error that was actually a 404, because I forgot `/all` at the end of the URL.
+
+## Still to do
+
+- Make the Update button work
+- Add a form to create new offices
+- Do the same pages for doctors, patients, specializations and appointments
