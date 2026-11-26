@@ -59,4 +59,3 @@ The page itself is `src/pages/OfficeList.jsx`. The offices are loaded once with 
 
 - Make the Update button work
 - Add a form to create new offices
-- Do the same pages for doctors, patients, specializations and appointments
