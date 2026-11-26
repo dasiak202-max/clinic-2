@@ -104,11 +104,16 @@ public class SpecializationService {
         if (spec == null) {
             return "Specialization not found";
         }
-        boolean removed = spec.getDoctors().removeIf(d -> d.getId().equals(doctorId));
+
+        Doctor doctor = doctorRepo.findById(doctorId).orElse(null);
+        if (doctor == null) {
+            return "Doctor not found";
+        }
+        boolean removed = doctor.getSpecializations().removeIf(s -> s.getId().equals(specId));
         if (!removed) {
             return "Doctor does not have this specialization";
         }
-        specRepo.save(spec);             // Hibernate deletes the row from doctor_specialization
+        doctorRepo.save(doctor);             // Hibernate deletes the row from doctor_specialization
         return "Doctor removed from specialization successfully";
     }
 

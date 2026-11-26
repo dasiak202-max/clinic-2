@@ -1,0 +1,67 @@
+.office-page {
+  max-width: 900px;
+  margin: 40px auto;
+  font-family: Arial, sans-serif;
+}
+
+.office-page h1 {
+  color: #1e3a8a;
+}
+
+.search-box {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 16px;
+  border: 1px solid #94a3b8;
+  border-radius: 6px;
+  font-size: 15px;
+}
+
+.message {
+  padding: 8px 12px;
+  background: #eef2ff;
+  border-left: 4px solid #4f46e5;
+}
+
+.office-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.office-table th,
+.office-table td {
+  border: 1px solid #cbd5e1;
+  padding: 10px;
+  text-align: left;
+}
+
+.office-table th {
+  background: #1e3a8a;
+  color: white;
+}
+
+.office-table tr:nth-child(even) {
+  background: #f1f5f9;
+}
+
+.empty {
+  text-align: center !important;
+  color: #64748b;
+}
+
+.btn {
+  padding: 6px 12px;
+  margin-right: 6px;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+}
+
+.btn-update {
+  background: #2563eb;
+}
+
+.btn-delete {
+  background: #dc2626;
+}
